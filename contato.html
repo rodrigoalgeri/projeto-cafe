@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contato - Café Aroma</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-coffee me-2"></i>
+                Café Aroma
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Início</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="cardapio.html">Cardápio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="sobre.html">Sobre Nós</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="contato.html">Contato</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contact Header -->
+    <section class="py-5 bg-secondary" style="background-color: var(--secondary-color) !important;">
+        <div class="container text-center text-white">
+            <h1 class="display-4 fw-bold">Entre em Contato</h1>
+            <p class="lead">Estamos ansiosos para ouvir você! Use um dos métodos abaixo para entrar em contato conosco.</p>
+        </div>
+    </section>
+
+    <!-- Contact Information -->
+    <section class="py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 mb-4">
+                    <h2 style="color: var(--primary-color);">Informações de Contato</h2>
+                    <p class="mb-4">Adoraríamos ouvir suas dúvidas, sugestões ou simplesmente conversar sobre café! Entre em contato conosco usando qualquer uma das opções abaixo.</p>
+                    
+                    <div class="d-flex align-items-start mb-3">
+                        <i class="fas fa-map-marker-alt me-3 mt-1" style="color: var(--accent-color); font-size: 1.5rem;"></i>
+                        <div>
+                            <h5 style="color: var(--primary-color);">Endereço</h5>
+                            <p>Rua das Flores, 123<br>Centro, São Paulo - SP<br>CEP: 01234-567</p>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex align-items-start mb-3">
+                        <i class="fas fa-phone-alt me-3 mt-1" style="color: var(--accent-color); font-size: 1.5rem;"></i>
+                        <div>
+                            <h5 style="color: var(--primary-color);">Telefone</h5>
+                            <p>(11) 5555-1234</p>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex align-items-start mb-3">
+                        <i class="fas fa-envelope me-3 mt-1" style="color: var(--accent-color); font-size: 1.5rem;"></i>
+                        <div>
+                            <h5 style="color: var(--primary-color);">Email</h5>
+                            <p>contato@cafearoma.com.br</p>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex align-items-start">
+                        <i class="fas fa-clock me-3 mt-1" style="color: var(--accent-color); font-size: 1.5rem;"></i>
+                        <div>
+                            <h5 style="color: var(--primary-color);">Horário de Funcionamento</h5>
+                            <p>Segunda a Sexta: 7h às 20h<br>Sábados e Domingos: 8h às 19h</p>
+                        </div>
+                    </div>
+                    
+                    <h5 class="mt-4" style="color: var(--primary-color);">Siga-nos nas redes sociais</h5>
+                    <div class="mt-2">
+                        <a href="#" class="me-3" style="color: var(--primary-color); font-size: 1.75rem;"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="me-3" style="color: var(--primary-color); font-size: 1.75rem;"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="me-3" style="color: var(--primary-color); font-size: 1.75rem;"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+                
+                <div class="col-lg-6">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-body p-4">
+                            <h2 class="card-title mb-4" style="color: var(--primary-color);">Envie-nos uma mensagem</h2>
+                            <form id="contactForm">
+                                <div class="mb-3">
+                                    <label for="name" class="form-label">Nome</label>
+                                    <input type="text" class="form-control" id="name" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">Email</label>
+                                    <input type="email" class="form-control" id="email" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="subject" class="form-label">Assunto</label>
+                                    <input type="text" class="form-control" id="subject">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="message" class="form-label">Mensagem</label>
+                                    <textarea class="form-control" id="message" rows="5" required></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary" id="submitButton">Enviar Mensagem</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Map Section -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <h2 class="text-center mb-4" style="color: var(--primary-color);">Onde nos Encontrar</h2>
+            <div class="card border-0 shadow-sm overflow-hidden">
+                <div class="card-body p-0">
+                    <div style="width: 100%; height: 400px; background-color: var(--secondary-color);" class="d-flex justify-content-center align-items-center">
+                        <svg viewBox="0 0 200 100" width="100%" height="400">
+                            <rect width="100%" height="100%" fill="#E5E3DF" />
+                            <path d="M0,40 L20,35 L40,42 L60,40 L80,45 L100,38 L120,42 L140,37 L160,43 L180,38 L200,40 L200,100 L0,100 Z" fill="#CDCCC9" />
+                            <rect x="80" y="30" width="40" height="25" rx="2" fill="#8D6E63" />
+                            <rect x="90" y="45" width="20" height="10" fill="#5D4037" />
+                            <circle cx="100" cy="35" r="5" fill="#FFCA28" />
+                            <path d="M85,55 L115,55 L115,60 L85,60 Z" fill="#5D4037" />
+                            <path d="M50,60 L70,60" stroke="#8D6E63" stroke-width="2" />
+                            <path d="M130,60 L150,60" stroke="#8D6E63" stroke-width="2" />
+                            <circle cx="100" cy="42" r="10" fill="rgba(255, 202, 40, 0.5)" opacity="0.7">
+                                <animate attributeName="opacity" values="0.7;0.2;0.7" dur="2s" repeatCount="indefinite" />
+                                <animate attributeName="r" values="10;15;10" dur="2s" repeatCount="indefinite" />
+                            </circle>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-3">
+                <a href="https://maps.google.com" target="_blank" class="btn btn-outline-primary">Ver no Google Maps</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-4">
+        <div class="container text-center">
+            <p> 2025 Café Aroma - Todos os direitos reservados</p>
+            <div class="social-icons">
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const button = document.getElementById('submitButton');
+            button.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Enviando...';
+            button.disabled = true;
+            
+            // Simulando envio do formulário
+            setTimeout(() => {
+                alert('Mensagem enviada com sucesso! Entraremos em contato em breve.');
+                document.getElementById('contactForm').reset();
+                button.innerHTML = 'Enviar Mensagem';
+                button.disabled = false;
+            }, 1500);
+        });
+    </script>
+</body>
+</html>
