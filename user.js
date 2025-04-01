@@ -34,25 +34,25 @@ async function login(email, password) {
     // Simulate server request delay
     await new Promise(resolve => setTimeout(resolve, 1000));
     
-    // Get users from localStorage
-    const users = JSON.parse(localStorage.getItem('cafeAromaUsers') || '[]');
-    
-    // Find user with matching email and password
-    const user = users.find(u => u.email === email && u.password === password);
-    
-    if (user) {
-        // Store user data in localStorage (except password)
-        const userData = { ...user };
-        delete userData.password;
-        localStorage.setItem('cafeAromaUser', JSON.stringify(userData));
+    try {
+        // Use the database module to verify login
+        const user = window.CafeAromaDB.users.verifyLogin(email, password);
         
-        // Update all pages that need to know about the logged in user
-        updateNavbarForLoggedInUser();
+        if (user) {
+            // Store user data in localStorage (except password)
+            localStorage.setItem('cafeAromaUser', JSON.stringify(user));
+            
+            // Update all pages that need to know about the logged in user
+            updateNavbarForLoggedInUser();
+            
+            return true;
+        }
         
-        return true;
+        return false;
+    } catch (error) {
+        console.error('Login error:', error);
+        return false;
     }
-    
-    return false;
 }
 
 // Register function
@@ -60,28 +60,14 @@ async function register(userData) {
     // Simulate server request delay
     await new Promise(resolve => setTimeout(resolve, 1500));
     
-    // Get existing users
-    const users = JSON.parse(localStorage.getItem('cafeAromaUsers') || '[]');
-    
-    // Check if email already exists
-    if (users.some(u => u.email === userData.email)) {
-        throw new Error('Este email já está em uso');
+    try {
+        // Use the database module to register user
+        const newUser = window.CafeAromaDB.users.register(userData);
+        return !!newUser;
+    } catch (error) {
+        console.error('Registration error:', error);
+        throw error;
     }
-    
-    // Add user ID and registration date
-    const newUser = {
-        ...userData,
-        id: Date.now().toString(),
-        createdAt: new Date().toISOString()
-    };
-    
-    // Add to users array
-    users.push(newUser);
-    
-    // Save back to localStorage
-    localStorage.setItem('cafeAromaUsers', JSON.stringify(users));
-    
-    return true;
 }
 
 // Logout function
@@ -172,61 +158,46 @@ function updateNavbarForLoggedInUser() {
 
 // Function to update user data
 async function updateUserData(userData) {
-    // Get existing users
-    const users = JSON.parse(localStorage.getItem('cafeAromaUsers') || '[]');
-    
-    // Find user by ID
-    const userIndex = users.findIndex(u => u.id === userData.id);
-    
-    if (userIndex === -1) {
-        throw new Error('Usuário não encontrado');
+    try {
+        // Get current user
+        const currentUser = getCurrentUser();
+        
+        if (!currentUser) {
+            throw new Error('Usuário não autenticado');
+        }
+        
+        // Update user in database
+        const updatedUser = window.CafeAromaDB.users.updateProfile(currentUser.id, userData);
+        
+        if (updatedUser) {
+            // Update current user session
+            localStorage.setItem('cafeAromaUser', JSON.stringify(updatedUser));
+            return true;
+        }
+        
+        return false;
+    } catch (error) {
+        console.error('Update user error:', error);
+        throw error;
     }
-    
-    // Update user
-    users[userIndex] = {
-        ...users[userIndex],
-        ...userData
-    };
-    
-    // Save back to localStorage
-    localStorage.setItem('cafeAromaUsers', JSON.stringify(users));
-    
-    // Update current user session
-    localStorage.setItem('cafeAromaUser', JSON.stringify(userData));
-    
-    return true;
 }
 
 // Function to change password
 async function changePassword(currentPassword, newPassword) {
-    const user = getCurrentUser();
-    
-    if (!user) {
-        throw new Error('Usuário não autenticado');
+    try {
+        const user = getCurrentUser();
+        
+        if (!user) {
+            throw new Error('Usuário não autenticado');
+        }
+        
+        // Change password in database
+        const result = window.CafeAromaDB.users.changePassword(user.id, currentPassword, newPassword);
+        return !!result;
+    } catch (error) {
+        console.error('Change password error:', error);
+        throw error;
     }
-    
-    // Get existing users
-    const users = JSON.parse(localStorage.getItem('cafeAromaUsers') || '[]');
-    
-    // Find user by ID
-    const userIndex = users.findIndex(u => u.id === user.id);
-    
-    if (userIndex === -1) {
-        throw new Error('Usuário não encontrado');
-    }
-    
-    // Verify current password
-    if (users[userIndex].password !== currentPassword) {
-        throw new Error('Senha atual incorreta');
-    }
-    
-    // Update password
-    users[userIndex].password = newPassword;
-    
-    // Save back to localStorage
-    localStorage.setItem('cafeAromaUsers', JSON.stringify(users));
-    
-    return true;
 }
 
 // Initialize on page load
