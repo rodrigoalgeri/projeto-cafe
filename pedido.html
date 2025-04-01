@@ -470,6 +470,7 @@
     <footer class="py-4">
         <div class="container text-center">
             <p> 2025 Café Aroma - Todos os direitos reservados</p>
+            <p>Desenvolvido por Rodrigo L. Algeri</p>
             <div class="social-icons">
                 <a href="#"><i class="fab fa-facebook"></i></a>
                 <a href="#"><i class="fab fa-instagram"></i></a>
@@ -479,175 +480,185 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="user.js"></script>
     <script>
-        // Cart functionality
-        const cart = [];
-        const deliveryFee = 8.00;
-        
-        // DOM elements
-        const orderItemsContainer = document.getElementById('orderItems');
-        const emptyOrderMessage = document.getElementById('emptyOrderMessage');
-        const subtotalAmount = document.getElementById('subtotalAmount');
-        const deliveryFeeElement = document.getElementById('deliveryFee');
-        const totalAmount = document.getElementById('totalAmount');
-        const submitOrderBtn = document.getElementById('submitOrderBtn');
-        const deliveryOption = document.getElementById('deliveryOption');
-        const pickupOption = document.getElementById('pickupOption');
-        const deliveryAddressForm = document.getElementById('deliveryAddressForm');
-        
-        // Add event listeners
-        document.querySelectorAll('.add-to-order-btn').forEach(button => {
-            button.addEventListener('click', function() {
-                const item = this.closest('.order-item');
-                const name = item.dataset.name;
-                const price = parseFloat(item.dataset.price);
-                
-                // Add item to cart
-                addToCart(name, price);
-                
-                // Visual feedback
-                button.innerHTML = '<i class="fas fa-check"></i> Adicionado';
-                button.classList.remove('btn-outline-primary');
-                button.classList.add('btn-success');
-                
-                setTimeout(() => {
-                    button.innerHTML = 'Adicionar';
-                    button.classList.remove('btn-success');
-                    button.classList.add('btn-outline-primary');
-                }, 1500);
-            });
-        });
-        
-        // Delivery option change
-        deliveryOption.addEventListener('change', updateDeliveryOption);
-        pickupOption.addEventListener('change', updateDeliveryOption);
-        
-        // Submit order button
-        submitOrderBtn.addEventListener('click', submitOrder);
-        
-        // Functions
-        function addToCart(name, price) {
-            // Check if item already exists in cart
-            const existingItem = cart.find(item => item.name === name);
+        // Add at the beginning of the existing script
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if user is logged in, redirect to login if not
+            if (!isLoggedIn()) {
+                alert('Por favor, faça login para continuar com seu pedido.');
+                window.location.href = 'login.html?redirect=pedido.html';
+            }
             
-            if (existingItem) {
-                existingItem.quantity += 1;
-            } else {
-                cart.push({
-                    name: name,
-                    price: price,
-                    quantity: 1
+            // Cart functionality
+            const cart = [];
+            const deliveryFee = 8.00;
+            
+            // DOM elements
+            const orderItemsContainer = document.getElementById('orderItems');
+            const emptyOrderMessage = document.getElementById('emptyOrderMessage');
+            const subtotalAmount = document.getElementById('subtotalAmount');
+            const deliveryFeeElement = document.getElementById('deliveryFee');
+            const totalAmount = document.getElementById('totalAmount');
+            const submitOrderBtn = document.getElementById('submitOrderBtn');
+            const deliveryOption = document.getElementById('deliveryOption');
+            const pickupOption = document.getElementById('pickupOption');
+            const deliveryAddressForm = document.getElementById('deliveryAddressForm');
+            
+            // Add event listeners
+            document.querySelectorAll('.add-to-order-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const item = this.closest('.order-item');
+                    const name = item.dataset.name;
+                    const price = parseFloat(item.dataset.price);
+                    
+                    // Add item to cart
+                    addToCart(name, price);
+                    
+                    // Visual feedback
+                    button.innerHTML = '<i class="fas fa-check"></i> Adicionado';
+                    button.classList.remove('btn-outline-primary');
+                    button.classList.add('btn-success');
+                    
+                    setTimeout(() => {
+                        button.innerHTML = 'Adicionar';
+                        button.classList.remove('btn-success');
+                        button.classList.add('btn-outline-primary');
+                    }, 1500);
                 });
-            }
-            
-            updateOrderSummary();
-        }
-        
-        function updateOrderSummary() {
-            if (cart.length === 0) {
-                emptyOrderMessage.style.display = 'block';
-                orderItemsContainer.innerHTML = '';
-                subtotalAmount.textContent = 'R$ 0,00';
-                totalAmount.textContent = 'R$ 0,00';
-                submitOrderBtn.disabled = true;
-                return;
-            }
-            
-            emptyOrderMessage.style.display = 'none';
-            submitOrderBtn.disabled = false;
-            
-            // Clear and rebuild order items
-            orderItemsContainer.innerHTML = '';
-            
-            let subtotal = 0;
-            
-            // Add each item to the order summary
-            cart.forEach((item, index) => {
-                const itemTotal = item.price * item.quantity;
-                subtotal += itemTotal;
-                
-                const itemElement = document.createElement('div');
-                itemElement.className = 'order-item-row mb-3 animate-fade';
-                itemElement.innerHTML = `
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h6 class="mb-0">${item.name}</h6>
-                            <div class="text-muted small">R$ ${item.price.toFixed(2)}</div>
-                        </div>
-                        <div class="d-flex align-items-center">
-                            <div class="input-group input-group-sm quantity-control me-2">
-                                <button class="btn btn-outline-secondary" type="button" onclick="updateQuantity(${index}, -1)">-</button>
-                                <input type="text" class="form-control text-center" value="${item.quantity}" readonly>
-                                <button class="btn btn-outline-secondary" type="button" onclick="updateQuantity(${index}, 1)">+</button>
-                            </div>
-                            <button class="btn btn-sm btn-outline-danger" onclick="removeItem(${index})">
-                                <i class="fas fa-trash-alt"></i>
-                            </button>
-                        </div>
-                    </div>
-                `;
-                
-                orderItemsContainer.appendChild(itemElement);
             });
             
-            // Update totals
-            const isDelivery = deliveryOption.checked;
-            const total = isDelivery ? subtotal + deliveryFee : subtotal;
+            // Delivery option change
+            deliveryOption.addEventListener('change', updateDeliveryOption);
+            pickupOption.addEventListener('change', updateDeliveryOption);
             
-            subtotalAmount.textContent = `R$ ${subtotal.toFixed(2)}`;
-            deliveryFeeElement.textContent = `R$ ${deliveryFee.toFixed(2)}`;
-            totalAmount.textContent = `R$ ${total.toFixed(2)}`;
+            // Submit order button
+            submitOrderBtn.addEventListener('click', submitOrder);
             
-            // Show/hide delivery fee row
-            const deliveryFeeRow = document.querySelector('.delivery-fee-row');
-            deliveryFeeRow.style.display = isDelivery ? 'flex' : 'none';
-        }
-        
-        function updateQuantity(index, change) {
-            cart[index].quantity += change;
-            
-            if (cart[index].quantity <= 0) {
-                removeItem(index);
-            } else {
+            // Functions
+            function addToCart(name, price) {
+                // Check if item already exists in cart
+                const existingItem = cart.find(item => item.name === name);
+                
+                if (existingItem) {
+                    existingItem.quantity += 1;
+                } else {
+                    cart.push({
+                        name: name,
+                        price: price,
+                        quantity: 1
+                    });
+                }
+                
                 updateOrderSummary();
             }
-        }
-        
-        function removeItem(index) {
-            cart.splice(index, 1);
-            updateOrderSummary();
-        }
-        
-        function updateDeliveryOption() {
-            const isDelivery = deliveryOption.checked;
-            deliveryAddressForm.classList.toggle('d-none', !isDelivery);
-            updateOrderSummary();
-        }
-        
-        function submitOrder() {
-            // Generate a random order number
-            const orderNumber = Math.floor(100000 + Math.random() * 900000);
-            document.getElementById('orderNumber').textContent = orderNumber;
             
-            // Set estimated time based on delivery method
-            const isDelivery = deliveryOption.checked;
-            const estimatedTime = isDelivery ? 
-                "Seu pedido chegará em aproximadamente 30-45 minutos." :
-                "Seu pedido estará pronto para retirada em aproximadamente 20 minutos.";
-            document.getElementById('orderEstimatedTime').textContent = estimatedTime;
+            function updateOrderSummary() {
+                if (cart.length === 0) {
+                    emptyOrderMessage.style.display = 'block';
+                    orderItemsContainer.innerHTML = '';
+                    subtotalAmount.textContent = 'R$ 0,00';
+                    totalAmount.textContent = 'R$ 0,00';
+                    submitOrderBtn.disabled = true;
+                    return;
+                }
+                
+                emptyOrderMessage.style.display = 'none';
+                submitOrderBtn.disabled = false;
+                
+                // Clear and rebuild order items
+                orderItemsContainer.innerHTML = '';
+                
+                let subtotal = 0;
+                
+                // Add each item to the order summary
+                cart.forEach((item, index) => {
+                    const itemTotal = item.price * item.quantity;
+                    subtotal += itemTotal;
+                    
+                    const itemElement = document.createElement('div');
+                    itemElement.className = 'order-item-row mb-3 animate-fade';
+                    itemElement.innerHTML = `
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="mb-0">${item.name}</h6>
+                                <div class="text-muted small">R$ ${item.price.toFixed(2)}</div>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <div class="input-group input-group-sm quantity-control me-2">
+                                    <button class="btn btn-outline-secondary" type="button" onclick="updateQuantity(${index}, -1)">-</button>
+                                    <input type="text" class="form-control text-center" value="${item.quantity}" readonly>
+                                    <button class="btn btn-outline-secondary" type="button" onclick="updateQuantity(${index}, 1)">+</button>
+                                </div>
+                                <button class="btn btn-sm btn-outline-danger" onclick="removeItem(${index})">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    
+                    orderItemsContainer.appendChild(itemElement);
+                });
+                
+                // Update totals
+                const isDelivery = deliveryOption.checked;
+                const total = isDelivery ? subtotal + deliveryFee : subtotal;
+                
+                subtotalAmount.textContent = `R$ ${subtotal.toFixed(2)}`;
+                deliveryFeeElement.textContent = `R$ ${deliveryFee.toFixed(2)}`;
+                totalAmount.textContent = `R$ ${total.toFixed(2)}`;
+                
+                // Show/hide delivery fee row
+                const deliveryFeeRow = document.querySelector('.delivery-fee-row');
+                deliveryFeeRow.style.display = isDelivery ? 'flex' : 'none';
+            }
             
-            // Show confirmation modal
-            const modal = new bootstrap.Modal(document.getElementById('orderConfirmationModal'));
-            modal.show();
+            function updateQuantity(index, change) {
+                cart[index].quantity += change;
+                
+                if (cart[index].quantity <= 0) {
+                    removeItem(index);
+                } else {
+                    updateOrderSummary();
+                }
+            }
             
-            // Clear cart
-            cart.length = 0;
-            updateOrderSummary();
-        }
-        
-        // Make functions available globally
-        window.updateQuantity = updateQuantity;
-        window.removeItem = removeItem;
+            function removeItem(index) {
+                cart.splice(index, 1);
+                updateOrderSummary();
+            }
+            
+            function updateDeliveryOption() {
+                const isDelivery = deliveryOption.checked;
+                deliveryAddressForm.classList.toggle('d-none', !isDelivery);
+                updateOrderSummary();
+            }
+            
+            function submitOrder() {
+                // Generate a random order number
+                const orderNumber = Math.floor(100000 + Math.random() * 900000);
+                document.getElementById('orderNumber').textContent = orderNumber;
+                
+                // Set estimated time based on delivery method
+                const isDelivery = deliveryOption.checked;
+                const estimatedTime = isDelivery ? 
+                    "Seu pedido chegará em aproximadamente 30-45 minutos." :
+                    "Seu pedido estará pronto para retirada em aproximadamente 20 minutos.";
+                document.getElementById('orderEstimatedTime').textContent = estimatedTime;
+                
+                // Show confirmation modal
+                const modal = new bootstrap.Modal(document.getElementById('orderConfirmationModal'));
+                modal.show();
+                
+                // Clear cart
+                cart.length = 0;
+                updateOrderSummary();
+            }
+            
+            // Make functions available globally
+            window.updateQuantity = updateQuantity;
+            window.removeItem = removeItem;
+        });
     </script>
 </body>
 </html>

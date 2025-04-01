@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Perfil - Café Aroma</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .profile-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .profile-header {
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 10px 10px 0 0;
+            padding: 20px;
+        }
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            background-color: var(--accent-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: var(--dark-color);
+            margin-right: 20px;
+            position: relative;
+        }
+        .profile-avatar .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+        .profile-avatar:hover .overlay {
+            display: flex;
+        }
+        .nav-pills .nav-link {
+            color: var(--dark-color);
+            border-radius: 0;
+            padding: 15px 20px;
+        }
+        .nav-pills .nav-link.active {
+            background-color: var(--accent-color);
+            color: var(--dark-color);
+        }
+        .tab-pane {
+            padding: 20px;
+        }
+        .order-card {
+            transition: all 0.3s;
+        }
+        .order-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        .order-status {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 5px;
+        }
+        .status-delivered {
+            background-color: #28a745;
+        }
+        .status-processing {
+            background-color: #ffc107;
+        }
+        .status-canceled {
+            background-color: #dc3545;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-coffee me-2"></i>
+                Café Aroma
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Início</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="cardapio.html">Cardápio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="sobre.html">Sobre Nós</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contato.html">Contato</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Profile Header -->
+    <section class="py-5 bg-light">
+        <div class="container profile-container">
+            <div class="card border-0 shadow-sm">
+                <div class="profile-header d-flex align-items-center">
+                    <div class="profile-avatar" id="profileAvatar" onclick="document.getElementById('profileImageUpload').click()">
+                        <div id="avatarContent">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="overlay">
+                            <i class="fas fa-camera text-white"></i>
+                        </div>
+                        <input type="file" id="profileImageUpload" style="display: none" accept="image/*">
+                    </div>
+                    <div>
+                        <h1 class="mb-1" id="profileName">Carregando...</h1>
+                        <p class="mb-0" id="profileEmail">carregando@email.com</p>
+                    </div>
+                </div>
+                
+                <!-- Profile Navigation -->
+                <ul class="nav nav-pills nav-fill" id="profileTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="info-tab" data-bs-toggle="tab" data-bs-target="#info" type="button" role="tab">
+                            <i class="fas fa-user-circle me-2"></i>Meus Dados
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="orders-tab" data-bs-toggle="tab" data-bs-target="#orders" type="button" role="tab">
+                            <i class="fas fa-shopping-bag me-2"></i>Pedidos
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="preferences-tab" data-bs-toggle="tab" data-bs-target="#preferences" type="button" role="tab">
+                            <i class="fas fa-cog me-2"></i>Preferências
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="security-tab" data-bs-toggle="tab" data-bs-target="#security" type="button" role="tab">
+                            <i class="fas fa-shield-alt me-2"></i>Segurança
+                        </button>
+                    </li>
+                </ul>
+                
+                <!-- Tab Content -->
+                <div class="tab-content p-4" id="profileTabsContent">
+                    <!-- Personal Info Tab -->
+                    <div class="tab-pane fade show active" id="info" role="tabpanel">
+                        <h3 class="mb-4" style="color: var(--primary-color);">Informações Pessoais</h3>
+                        
+                        <div id="infoAlert" class="alert d-none" role="alert"></div>
+                        
+                        <form id="personalInfoForm">
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="firstName" class="form-label">Nome</label>
+                                    <input type="text" class="form-control" id="firstName" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="lastName" class="form-label">Sobrenome</label>
+                                    <input type="text" class="form-control" id="lastName" required>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="profileEmailInput" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="profileEmailInput" required>
+                                <div class="form-text">Seu email é usado para login e comunicações importantes.</div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="phoneNumber" class="form-label">Telefone</label>
+                                <input type="tel" class="form-control" id="phoneNumber" placeholder="(00) 00000-0000">
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="birthdate" class="form-label">Data de Nascimento</label>
+                                <input type="date" class="form-control" id="birthdate">
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label">Gênero</label>
+                                <div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="gender" id="genderMale" value="male">
+                                        <label class="form-check-label" for="genderMale">Masculino</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="gender" id="genderFemale" value="female">
+                                        <label class="form-check-label" for="genderFemale">Feminino</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="gender" id="genderOther" value="other">
+                                        <label class="form-check-label" for="genderOther">Outro</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="gender" id="genderPreferNot" value="prefer_not">
+                                        <label class="form-check-label" for="genderPreferNot">Prefiro não informar</label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary" id="saveProfileBtn">
+                                Salvar Alterações
+                            </button>
+                        </form>
+                    </div>
+                    
+                    <!-- Orders Tab -->
+                    <div class="tab-pane fade" id="orders" role="tabpanel">
+                        <h3 class="mb-4" style="color: var(--primary-color);">Histórico de Pedidos</h3>
+                        
+                        <div class="row g-4" id="ordersContainer">
+                            <!-- Sample orders - will be populated dynamically or replaced with real data -->
+                            <div class="col-md-6">
+                                <div class="card order-card h-100">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                            <h5 class="card-title mb-0">Pedido #102458</h5>
+                                            <span class="badge bg-success">Entregue</span>
+                                        </div>
+                                        <p class="card-text">
+                                            <strong>Data:</strong> 10/11/2025<br>
+                                            <strong>Itens:</strong> 3<br>
+                                            <strong>Total:</strong> R$ 42,50
+                                        </p>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <button class="btn btn-sm btn-outline-primary" data-bs-toggle="collapse" data-bs-target="#details102458">
+                                                Ver Detalhes
+                                            </button>
+                                            <button class="btn btn-sm btn-outline-secondary">
+                                                <i class="fas fa-redo-alt me-1"></i>Repetir
+                                            </button>
+                                        </div>
+                                        <div class="collapse mt-3" id="details102458">
+                                            <div class="card card-body bg-light">
+                                                <p class="mb-2 fw-bold">Itens do Pedido:</p>
+                                                <ul class="list-unstyled mb-0">
+                                                    <li>1x Cappuccino Italiano - R$ 14,00</li>
+                                                    <li>1x Brownie de Chocolate - R$ 12,00</li>
+                                                    <li>1x Avocado Toast - R$ 22,00</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer bg-white text-muted">
+                                        <small>Entregue em: 10/11/2025, 14:45</small>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="card order-card h-100">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                            <h5 class="card-title mb-0">Pedido #102357</h5>
+                                            <span class="badge bg-warning text-dark">Em preparo</span>
+                                        </div>
+                                        <p class="card-text">
+                                            <strong>Data:</strong> 05/11/2025<br>
+                                            <strong>Itens:</strong> 2<br>
+                                            <strong>Total:</strong> R$ 30,50
+                                        </p>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <button class="btn btn-sm btn-outline-primary" data-bs-toggle="collapse" data-bs-target="#details102357">
+                                                Ver Detalhes
+                                            </button>
+                                            <button class="btn btn-sm btn-outline-danger">
+                                                <i class="fas fa-times me-1"></i>Cancelar
+                                            </button>
+                                        </div>
+                                        <div class="collapse mt-3" id="details102357">
+                                            <div class="card card-body bg-light">
+                                                <p class="mb-2 fw-bold">Itens do Pedido:</p>
+                                                <ul class="list-unstyled mb-0">
+                                                    <li>1x Latte Macchiato - R$ 15,00</li>
+                                                    <li>1x Cheesecake - R$ 15,50</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer bg-white text-muted">
+                                        <small>Estimativa de entrega: 05/11/2025, 16:30</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Preferences Tab -->
+                    <div class="tab-pane fade" id="preferences" role="tabpanel">
+                        <h3 class="mb-4" style="color: var(--primary-color);">Minhas Preferências</h3>
+                        
+                        <div id="preferencesAlert" class="alert d-none" role="alert"></div>
+                        
+                        <form id="preferencesForm">
+                            <div class="mb-4">
+                                <h5>Preferências de Comunicação</h5>
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" id="emailNotifications" checked>
+                                    <label class="form-check-label" for="emailNotifications">
+                                        Receber notificações por email
+                                    </label>
+                                </div>
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" id="smsNotifications">
+                                    <label class="form-check-label" for="smsNotifications">
+                                        Receber notificações por SMS
+                                    </label>
+                                </div>
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" id="marketingEmails" checked>
+                                    <label class="form-check-label" for="marketingEmails">
+                                        Receber promoções e ofertas especiais
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="orderUpdates" id="orderUpdatesYes" value="yes" checked>
+                                    <label class="form-check-label" for="orderUpdatesYes">
+                                        Receber atualizações sobre meus pedidos
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <h5>Preferências de Café</h5>
+                                <div class="mb-3">
+                                    <label for="favoriteProduct" class="form-label">Produto Favorito</label>
+                                    <select class="form-select" id="favoriteProduct">
+                                        <option value="">Selecione um produto</option>
+                                        <option value="espresso">Espresso Tradicional</option>
+                                        <option value="cappuccino">Cappuccino Italiano</option>
+                                        <option value="latte">Latte Macchiato</option>
+                                        <option value="mocha">Mocha</option>
+                                        <option value="cold_brew">Cold Brew</option>
+                                        <option value="special">Café Aroma Especial</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label class="form-label d-block">Intensidade Preferida</label>
+                                    <div class="btn-group" role="group">
+                                        <input type="radio" class="btn-check" name="coffeeIntensity" id="intensityLight" value="light">
+                                        <label class="btn btn-outline-secondary" for="intensityLight">Suave</label>
+                                        
+                                        <input type="radio" class="btn-check" name="coffeeIntensity" id="intensityMedium" value="medium" checked>
+                                        <label class="btn btn-outline-secondary" for="intensityMedium">Médio</label>
+                                        
+                                        <input type="radio" class="btn-check" name="coffeeIntensity" id="intensityStrong" value="strong">
+                                        <label class="btn btn-outline-secondary" for="intensityStrong">Forte</label>
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label class="form-label">Opções de Leite</label>
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="radio" name="milkOption" id="regularMilk" value="regular" checked>
+                                        <label class="form-check-label" for="regularMilk">
+                                            Leite Integral
+                                        </label>
+                                    </div>
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="radio" name="milkOption" id="skimMilk" value="skim">
+                                        <label class="form-check-label" for="skimMilk">
+                                            Leite Desnatado
+                                        </label>
+                                    </div>
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="radio" name="milkOption" id="almondMilk" value="almond">
+                                        <label class="form-check-label" for="almondMilk">
+                                            Leite de Amêndoas
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="milkOption" id="oatMilk" value="oat">
+                                        <label class="form-check-label" for="oatMilk">
+                                            Leite de Aveia
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary" id="savePreferencesBtn">
+                                Salvar Preferências
+                            </button>
+                        </form>
+                    </div>
+                    
+                    <!-- Security Tab -->
+                    <div class="tab-pane fade" id="security" role="tabpanel">
+                        <h3 class="mb-4" style="color: var(--primary-color);">Segurança da Conta</h3>
+                        
+                        <div id="securityAlert" class="alert d-none" role="alert"></div>
+                        
+                        <div class="card mb-4">
+                            <div class="card-header bg-light">
+                                <h5 class="mb-0">Alterar Senha</h5>
+                            </div>
+                            <div class="card-body">
+                                <form id="changePasswordForm">
+                                    <div class="mb-3">
+                                        <label for="currentPassword" class="form-label">Senha Atual</label>
+                                        <input type="password" class="form-control" id="currentPassword" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="newPassword" class="form-label">Nova Senha</label>
+                                        <input type="password" class="form-control" id="newPassword" required>
+                                        <div class="form-text">A senha deve ter pelo menos 8 caracteres, incluindo letras maiúsculas, minúsculas e números.</div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="confirmNewPassword" class="form-label">Confirmar Nova Senha</label>
+                                        <input type="password" class="form-control" id="confirmNewPassword" required>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary" id="changePasswordBtn">
+                                        Alterar Senha
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-header bg-light">
+                                <h5 class="mb-0">Sessões Ativas</h5>
+                            </div>
+                            <div class="card-body">
+                                <p>Dispositivos conectados à sua conta:</p>
+                                
+                                <div class="list-group">
+                                    <div class="list-group-item list-group-item-action">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <h6 class="mb-1"><i class="fas fa-laptop me-2"></i>Computador Atual</h6>
+                                            <small class="text-success">Ativo agora</small>
+                                        </div>
+                                        <p class="mb-1">Navegador: Chrome</p>
+                                        <small class="text-muted">IP: 192.168.1.1 - São Paulo, Brasil</small>
+                                    </div>
+                                </div>
+                                
+                                <div class="mt-3">
+                                    <button type="button" class="btn btn-danger" id="logoutAllBtn">
+                                        <i class="fas fa-sign-out-alt me-2"></i>Sair de Todos os Dispositivos
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-4">
+        <div class="container text-center">
+            <p> 2025 Café Aroma - Todos os direitos reservados</p>
+            <p>Desenvolvido por Rodrigo L. Algeri</p>
+            <div class="social-icons">
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="user.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if user is logged in, redirect to login if not
+            if (!isLoggedIn()) {
+                alert('Por favor, faça login para acessar seu perfil.');
+                window.location.href = 'login.html?redirect=profile.html';
+                return;
+            }
+            
+            // Get current user data
+            const user = getCurrentUser();
+            
+            // Update profile header
+            document.getElementById('profileName').textContent = `${user.firstName} ${user.lastName}`;
+            document.getElementById('profileEmail').textContent = user.email;
+            
+            // Set up profile avatar
+            const avatarContent = document.getElementById('avatarContent');
+            if (user.profileImage) {
+                avatarContent.innerHTML = `<img src="${user.profileImage}" alt="${user.firstName}">`;
+            } else {
+                avatarContent.innerHTML = `${user.firstName.charAt(0)}${user.lastName.charAt(0)}`;
+            }
+            
+            // Handle profile image upload
+            document.getElementById('profileImageUpload').addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        const imageUrl = event.target.result;
+                        
+                        // Update UI
+                        avatarContent.innerHTML = `<img src="${imageUrl}" alt="${user.firstName}">`;
+                        
+                        // Update user data
+                        const updatedUserData = {
+                            ...user,
+                            profileImage: imageUrl
+                        };
+                        
+                        // Update user in localStorage
+                        const users = JSON.parse(localStorage.getItem('cafeAromaUsers') || '[]');
+                        const userIndex = users.findIndex(u => u.id === user.id);
+                        
+                        if (userIndex !== -1) {
+                            users[userIndex] = {
+                                ...users[userIndex],
+                                profileImage: imageUrl
+                            };
+                            localStorage.setItem('cafeAromaUsers', JSON.stringify(users));
+                            
+                            // Update current user session
+                            localStorage.setItem('cafeAromaUser', JSON.stringify(updatedUserData));
+                            
+                            // Update navbar
+                            updateNavbarForLoggedInUser();
+                        }
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+            
+            // Populate personal info form
+            document.getElementById('firstName').value = user.firstName || '';
+            document.getElementById('lastName').value = user.lastName || '';
+            document.getElementById('profileEmailInput').value = user.email || '';
+            document.getElementById('phoneNumber').value = user.phone || '';
+            
+            if (user.birthdate) {
+                document.getElementById('birthdate').value = user.birthdate;
+            }
+            
+            if (user.gender) {
+                document.querySelector(`input[name="gender"][value="${user.gender}"]`).checked = true;
+            }
+            
+            // Handle personal info form submission
+            document.getElementById('personalInfoForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const saveBtn = document.getElementById('saveProfileBtn');
+                const infoAlert = document.getElementById('infoAlert');
+                
+                // Show loading state
+                saveBtn.disabled = true;
+                saveBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Salvando...';
+                infoAlert.classList.add('d-none');
+                
+                // Update user data
+                const updatedUserData = {
+                    ...user,
+                    firstName: document.getElementById('firstName').value,
+                    lastName: document.getElementById('lastName').value,
+                    email: document.getElementById('profileEmailInput').value,
+                    phone: document.getElementById('phoneNumber').value,
+                    birthdate: document.getElementById('birthdate').value,
+                    gender: document.querySelector('input[name="gender"]:checked')?.value || ''
+                };
+                
+                // Simulate API request
+                setTimeout(() => {
+                    try {
+                        // Update user in localStorage (in a real app, this would be an API call)
+                        const users = JSON.parse(localStorage.getItem('cafeAromaUsers') || '[]');
+                        const userIndex = users.findIndex(u => u.id === user.id);
+                        
+                        if (userIndex !== -1) {
+                            users[userIndex] = {
+                                ...users[userIndex],
+                                ...updatedUserData
+                            };
+                            localStorage.setItem('cafeAromaUsers', JSON.stringify(users));
+                            
+                            // Update current user session
+                            localStorage.setItem('cafeAromaUser', JSON.stringify(updatedUserData));
+                            
+                            // Update profile header
+                            document.getElementById('profileName').textContent = `${updatedUserData.firstName} ${updatedUserData.lastName}`;
+                            document.getElementById('profileEmail').textContent = updatedUserData.email;
+                            
+                            // Fix: properly update the avatar, keeping the profile image if it exists
+                            if (updatedUserData.profileImage) {
+                                document.getElementById('avatarContent').innerHTML = `<img src="${updatedUserData.profileImage}" alt="${updatedUserData.firstName}">`;
+                            } else {
+                                document.getElementById('avatarContent').innerHTML = `${updatedUserData.firstName.charAt(0)}${updatedUserData.lastName.charAt(0)}`;
+                            }
+                            
+                            // Show success message
+                            infoAlert.textContent = 'Informações atualizadas com sucesso!';
+                            infoAlert.classList.remove('d-none', 'alert-danger');
+                            infoAlert.classList.add('alert-success');
+                        } else {
+                            throw new Error('Usuário não encontrado');
+                        }
+                    } catch (error) {
+                        // Show error message
+                        infoAlert.textContent = 'Erro ao atualizar informações: ' + error.message;
+                        infoAlert.classList.remove('d-none', 'alert-success');
+                        infoAlert.classList.add('alert-danger');
+                    } finally {
+                        // Reset button state
+                        saveBtn.disabled = false;
+                        saveBtn.innerHTML = 'Salvar Alterações';
+                    }
+                }, 1000);
+            });
+            
+            // Handle preferences form submission
+            document.getElementById('preferencesForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const saveBtn = document.getElementById('savePreferencesBtn');
+                const preferencesAlert = document.getElementById('preferencesAlert');
+                
+                // Show loading state
+                saveBtn.disabled = true;
+                saveBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Salvando...';
+                preferencesAlert.classList.add('d-none');
+                
+                // Get form data
+                const preferences = {
+                    emailNotifications: document.getElementById('emailNotifications').checked,
+                    smsNotifications: document.getElementById('smsNotifications').checked,
+                    marketingEmails: document.getElementById('marketingEmails').checked,
+                    orderUpdates: document.getElementById('orderUpdatesYes').checked,
+                    favoriteProduct: document.getElementById('favoriteProduct').value,
+                    coffeeIntensity: document.querySelector('input[name="coffeeIntensity"]:checked')?.value || 'medium',
+                    milkOption: document.querySelector('input[name="milkOption"]:checked')?.value || 'regular'
+                };
+                
+                // Simulate API request
+                setTimeout(() => {
+                    try {
+                        // Update user preferences in localStorage (in a real app, this would be an API call)
+                        const updatedUserData = {
+                            ...user,
+                            preferences: preferences
+                        };
+                        
+                        // Update user in localStorage
+                        const users = JSON.parse(localStorage.getItem('cafeAromaUsers') || '[]');
+                        const userIndex = users.findIndex(u => u.id === user.id);
+                        
+                        if (userIndex !== -1) {
+                            users[userIndex] = {
+                                ...users[userIndex],
+                                preferences: preferences
+                            };
+                            localStorage.setItem('cafeAromaUsers', JSON.stringify(users));
+                            
+                            // Update current user session
+                            localStorage.setItem('cafeAromaUser', JSON.stringify(updatedUserData));
+                            
+                            // Show success message
+                            preferencesAlert.textContent = 'Preferências salvas com sucesso!';
+                            preferencesAlert.classList.remove('d-none', 'alert-danger');
+                            preferencesAlert.classList.add('alert-success');
+                        } else {
+                            throw new Error('Usuário não encontrado');
+                        }
+                    } catch (error) {
+                        // Show error message
+                        preferencesAlert.textContent = 'Erro ao salvar preferências: ' + error.message;
+                        preferencesAlert.classList.remove('d-none', 'alert-success');
+                        preferencesAlert.classList.add('alert-danger');
+                    } finally {
+                        // Reset button state
+                        saveBtn.disabled = false;
+                        saveBtn.innerHTML = 'Salvar Preferências';
+                    }
+                }, 1000);
+            });
+            
+            // Handle change password form submission
+            document.getElementById('changePasswordForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const changeBtn = document.getElementById('changePasswordBtn');
+                const securityAlert = document.getElementById('securityAlert');
+                
+                // Show loading state
+                changeBtn.disabled = true;
+                changeBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Alterando...';
+                securityAlert.classList.add('d-none');
+                
+                // Get form data
+                const currentPassword = document.getElementById('currentPassword').value;
+                const newPassword = document.getElementById('newPassword').value;
+                const confirmNewPassword = document.getElementById('confirmNewPassword').value;
+                
+                // Validate passwords
+                if (newPassword !== confirmNewPassword) {
+                    securityAlert.textContent = 'As senhas não coincidem';
+                    securityAlert.classList.remove('d-none', 'alert-success');
+                    securityAlert.classList.add('alert-danger');
+                    
+                    changeBtn.disabled = false;
+                    changeBtn.innerHTML = 'Alterar Senha';
+                    return;
+                }
+                
+                // Simulate API request
+                setTimeout(() => {
+                    try {
+                        // Check current password (in a real app, this would be validated on the server)
+                        const users = JSON.parse(localStorage.getItem('cafeAromaUsers') || '[]');
+                        const userIndex = users.findIndex(u => u.id === user.id);
+                        
+                        if (userIndex !== -1) {
+                            if (users[userIndex].password !== currentPassword) {
+                                throw new Error('Senha atual incorreta');
+                            }
+                            
+                            // Update password
+                            users[userIndex].password = newPassword;
+                            localStorage.setItem('cafeAromaUsers', JSON.stringify(users));
+                            
+                            // Show success message
+                            securityAlert.textContent = 'Senha alterada com sucesso!';
+                            securityAlert.classList.remove('d-none', 'alert-danger');
+                            securityAlert.classList.add('alert-success');
+                            
+                            // Clear form
+                            document.getElementById('changePasswordForm').reset();
+                        } else {
+                            throw new Error('Usuário não encontrado');
+                        }
+                    } catch (error) {
+                        // Show error message
+                        securityAlert.textContent = error.message;
+                        securityAlert.classList.remove('d-none', 'alert-success');
+                        securityAlert.classList.add('alert-danger');
+                    } finally {
+                        // Reset button state
+                        changeBtn.disabled = false;
+                        changeBtn.innerHTML = 'Alterar Senha';
+                    }
+                }, 1000);
+            });
+            
+            // Handle logout from all devices
+            document.getElementById('logoutAllBtn').addEventListener('click', function() {
+                const confirm = window.confirm('Tem certeza que deseja sair de todos os dispositivos?');
+                
+                if (confirm) {
+                    // In a real app, this would invalidate all sessions on the server
+                    // For now, we'll just log out from the current session
+                    logout();
+                    window.location.href = 'login.html';
+                }
+            });
+            
+            // Set preferences if they exist
+            if (user.preferences) {
+                document.getElementById('emailNotifications').checked = user.preferences.emailNotifications ?? true;
+                document.getElementById('smsNotifications').checked = user.preferences.smsNotifications ?? false;
+                document.getElementById('marketingEmails').checked = user.preferences.marketingEmails ?? true;
+                document.getElementById('orderUpdatesYes').checked = user.preferences.orderUpdates ?? true;
+                
+                if (user.preferences.favoriteProduct) {
+                    document.getElementById('favoriteProduct').value = user.preferences.favoriteProduct;
+                }
+                
+                if (user.preferences.coffeeIntensity) {
+                    document.querySelector(`input[name="coffeeIntensity"][value="${user.preferences.coffeeIntensity}"]`).checked = true;
+                }
+                
+                if (user.preferences.milkOption) {
+                    document.querySelector(`input[name="milkOption"][value="${user.preferences.milkOption}"]`).checked = true;
+                }
+            }
+        });
+    </script>
+</body>
+</html>

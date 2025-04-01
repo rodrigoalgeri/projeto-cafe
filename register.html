@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro - Café Aroma</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .register-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .register-card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        .register-header {
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 10px 10px 0 0;
+            padding: 20px;
+            text-align: center;
+        }
+        .form-control:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 0.25rem rgba(255, 202, 40, 0.25);
+        }
+        .password-strength {
+            height: 5px;
+            transition: all 0.3s;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-coffee me-2"></i>
+                Café Aroma
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Início</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="cardapio.html">Cardápio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="sobre.html">Sobre Nós</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contato.html">Contato</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Register Section -->
+    <section class="py-5">
+        <div class="container register-container">
+            <div class="card register-card">
+                <div class="register-header">
+                    <h2><i class="fas fa-user-plus me-2"></i>Criar Conta</h2>
+                </div>
+                <div class="card-body p-4">
+                    <div id="registerAlert" class="alert d-none" role="alert"></div>
+                    
+                    <form id="registerForm">
+                        <div class="row mb-3">
+                            <div class="col-md-6 mb-3 mb-md-0">
+                                <label for="firstName" class="form-label">Nome</label>
+                                <input type="text" class="form-control" id="firstName" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="lastName" class="form-label">Sobrenome</label>
+                                <input type="text" class="form-control" id="lastName" required>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                                <input type="email" class="form-control" id="email" required>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="phone" class="form-label">Telefone</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                                <input type="tel" class="form-control" id="phone" placeholder="(00) 00000-0000">
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Senha</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                                <input type="password" class="form-control" id="password" required>
+                                <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                            <div class="password-strength mt-1 w-100 bg-light"></div>
+                            <small id="passwordHelp" class="form-text text-muted">
+                                A senha deve ter pelo menos 8 caracteres, incluindo letras maiúsculas, minúsculas e números.
+                            </small>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="confirmPassword" class="form-label">Confirmar Senha</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                                <input type="password" class="form-control" id="confirmPassword" required>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4 form-check">
+                            <input type="checkbox" class="form-check-input" id="terms" required>
+                            <label class="form-check-label" for="terms">
+                                Eu concordo com os <a href="#" class="text-decoration-none">Termos e Condições</a> e a <a href="#" class="text-decoration-none">Política de Privacidade</a>
+                            </label>
+                        </div>
+                        
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg" id="registerButton">
+                                Criar Conta
+                            </button>
+                        </div>
+                    </form>
+                    
+                    <hr class="my-4">
+                    
+                    <div class="text-center">
+                        <p>Já tem uma conta?</p>
+                        <a href="login.html" class="btn btn-outline-primary">Fazer Login</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-4">
+        <div class="container text-center">
+            <p> 2025 Café Aroma - Todos os direitos reservados</p>
+            <p>Desenvolvido por Rodrigo L. Algeri</p>
+            <div class="social-icons">
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="user.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Toggle password visibility
+            const togglePassword = document.getElementById('togglePassword');
+            const password = document.getElementById('password');
+            
+            togglePassword.addEventListener('click', function() {
+                const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+                password.setAttribute('type', type);
+                this.querySelector('i').classList.toggle('fa-eye');
+                this.querySelector('i').classList.toggle('fa-eye-slash');
+            });
+            
+            // Password strength indicator
+            const passwordStrength = document.querySelector('.password-strength');
+            const passwordInput = document.getElementById('password');
+            
+            passwordInput.addEventListener('input', function() {
+                const val = this.value;
+                let strength = 0;
+                
+                if (val.length >= 8) strength += 1;
+                if (val.match(/[A-Z]/)) strength += 1;
+                if (val.match(/[a-z]/)) strength += 1;
+                if (val.match(/[0-9]/)) strength += 1;
+                if (val.match(/[^A-Za-z0-9]/)) strength += 1;
+                
+                switch (strength) {
+                    case 0:
+                        passwordStrength.style.width = '0%';
+                        passwordStrength.style.backgroundColor = '';
+                        break;
+                    case 1:
+                        passwordStrength.style.width = '20%';
+                        passwordStrength.style.backgroundColor = '#dc3545'; // Bootstrap danger
+                        break;
+                    case 2:
+                        passwordStrength.style.width = '40%';
+                        passwordStrength.style.backgroundColor = '#ffc107'; // Bootstrap warning
+                        break;
+                    case 3:
+                        passwordStrength.style.width = '60%';
+                        passwordStrength.style.backgroundColor = '#fd7e14'; // Bootstrap orange
+                        break;
+                    case 4:
+                        passwordStrength.style.width = '80%';
+                        passwordStrength.style.backgroundColor = '#20c997'; // Bootstrap teal
+                        break;
+                    case 5:
+                        passwordStrength.style.width = '100%';
+                        passwordStrength.style.backgroundColor = '#198754'; // Bootstrap success
+                        break;
+                }
+            });
+            
+            // Handle registration form submission
+            const registerForm = document.getElementById('registerForm');
+            const registerButton = document.getElementById('registerButton');
+            const registerAlert = document.getElementById('registerAlert');
+            
+            registerForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Validate passwords match
+                const password = document.getElementById('password').value;
+                const confirmPassword = document.getElementById('confirmPassword').value;
+                
+                if (password !== confirmPassword) {
+                    registerAlert.classList.remove('d-none', 'alert-success');
+                    registerAlert.classList.add('alert-danger');
+                    registerAlert.textContent = 'As senhas não coincidem';
+                    return;
+                }
+                
+                // Disable button and show loading state
+                registerButton.disabled = true;
+                registerButton.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Criando conta...';
+                registerAlert.classList.add('d-none');
+                
+                // Get form data
+                const userData = {
+                    firstName: document.getElementById('firstName').value,
+                    lastName: document.getElementById('lastName').value,
+                    email: document.getElementById('email').value,
+                    phone: document.getElementById('phone').value,
+                    password: password
+                };
+                
+                // Call register function from user.js
+                register(userData)
+                    .then(success => {
+                        if (success) {
+                            registerAlert.classList.remove('d-none', 'alert-danger');
+                            registerAlert.classList.add('alert-success');
+                            registerAlert.textContent = 'Conta criada com sucesso! Redirecionando para o login...';
+                            
+                            setTimeout(() => {
+                                window.location.href = 'login.html';
+                            }, 2000);
+                        } else {
+                            throw new Error('Não foi possível criar a conta. Tente novamente mais tarde.');
+                        }
+                    })
+                    .catch(error => {
+                        registerAlert.classList.remove('d-none', 'alert-success');
+                        registerAlert.classList.add('alert-danger');
+                        registerAlert.textContent = error.message;
+                        
+                        // Reset button state
+                        registerButton.disabled = false;
+                        registerButton.innerHTML = 'Criar Conta';
+                    });
+            });
+        });
+    </script>
+</body>
+</html>
